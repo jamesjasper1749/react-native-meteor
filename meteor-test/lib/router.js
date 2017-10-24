@@ -8,9 +8,11 @@ Router.configure({
 	}
 });
 
-Router.route('/', {name: 'postsList'});
+Router.route('/', {name: 'login'});
 Router.route('/map', {name: 'mapPage'});
-
+Router.route('/addUser',{name: 'addUser'})
+Router.route('/upload',{name: 'upload'})
+Router.route('/signup',{name: 'signup'})
 Router.route('/posts/:_id', {  
 	name: 'postPage',
 	data: function() { return Posts.findOne(this.params._id);}

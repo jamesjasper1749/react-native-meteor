@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import {Text, View, Dimensions, Image ,TextInput} from 'react-native';
 import {Form, Item, Label, Input, Button, Header, Body, Title} from 'native-base';
 import Meteor, {createContrainer,Accounts} from 'react-native-meteor';
-import Profile from './Profile';
-
 // var myBg = require('../assets/icons/bg.jpg');
 var height = Dimensions.get('window').height;
 var width = Dimensions.get('window').width;
@@ -18,6 +16,7 @@ class SignIn extends Component {
          error: null,
        };
    }
+
 
    isValid() {
       const { email, password } = this.state;
@@ -44,41 +43,21 @@ class SignIn extends Component {
           if (error) {
             this.setState({ error: error.reason });
             alert('Invalid User');
+
           }
           else{
             alert('Login Success!!');
             console.log(email);
-
+            this.props.navigation.navigate('User');
+          }
         });
       }
       console.log(Meteor.userId());
     }
 
     onCreateAccount = () =>{
-      const { email, password } = this.state;
-      console.log(email);
-      console.log(password);
-      if (this.isValid()) {
-        Accounts.createUser({ email, password }, (error) => {
-          if (error) {
-            this.setState({ error: error.reason });
-          } else {
-            alert('create success');
-            // this.onSignIn(); // temp hack that you might need to use
-          }
-        });
-      }
-      else{
-        console.log('error');
-      }
+      this.props.navigation.navigate('CreateAccount');
     }
-
-  // logIn = () =>{
-  //   var username = this.state.username;
-  //   var password = this.state.password;
-  //
-  //   this.props.signIn(username,password);
-  // }
 
   render() {
     return (
@@ -89,7 +68,7 @@ class SignIn extends Component {
             <Form>
 
               <Item inlineLabel>
-                <Label> Username </Label>
+                <Label> Email : </Label>
                 <Input
                   autoCorrect={false}
                   onChangeText={(email)=>this.setState({email})}
@@ -98,7 +77,7 @@ class SignIn extends Component {
               </Item>
 
                <Item inlineLabel>
-                <Label> Password </Label>
+                <Label> Password : </Label>
                 <Input
                   // style={{}}
                   autoCorrect={false}
@@ -134,11 +113,6 @@ class SignIn extends Component {
     );
   }
 }
-
-// const SimpleApp = StackNavigator({
-//   SignIn: { screen: SignIn },
-//   Profile: { screen: Profile },
-// });
 
 const styles = {
   bgImage: {

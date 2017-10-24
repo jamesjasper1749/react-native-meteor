@@ -3,6 +3,12 @@ Meteor.startup(function() {
 });
 
 Template.mapPage.helpers({
+  // sounds: function() {
+  //   return Sounds.find({});
+  // },
+  posts: function() {
+    return Posts.find({}, {sort: {submitted: -1}});
+  },
   mapOptions: function() {
     if (GoogleMaps.loaded()) {
       return {
@@ -109,7 +115,7 @@ Template.mapPage.onCreated(function() {
       //  google.maps.event.addListener(map.instance, 'click', function(event) {
       //   var point = {lat: event.latLng.lat(), lng: event.latLng.lng()};
       //   Meteor.call('markInsert',point);
-      //   // Markers.insert({ lat: event.latLng.lat(), lng: event.latLng.lng() });
+        // Markers.insert({ lat: event.latLng.lat(), lng: event.latLng.lng() });
       // });
 
        console.log(document.getElementById('info-content'));
@@ -243,19 +249,19 @@ Template.mapPage.onCreated(function() {
 
           addResult(place,j,m);
 
-          // console.log(place)
+          console.log(place)
 
-          // google.maps.event.addListener(m, 'click', showInfoWindow(place));
+          google.maps.event.addListener(m, 'click', showInfoWindow(place));
           google.maps.event.addListener(m, 'click', function(event) {
-            // console.log(place)
-            // infowindow.setContent(place.name);
+            console.log(place)
+            infowindow.setContent(place.name);
             infowindow.open(map.instance, this);
             buildIWContent(place);
           });
         }
 
         function buildIWContent(place) {
-          // console.log(place);
+          console.log(place);
           if(place.icon){
             document.getElementById('iw-icon').style.display = '';
             document.getElementById('iw-icon').innerHTML = '<img class="hotelIcon" ' +
@@ -355,3 +361,13 @@ Template.mapPage.onCreated(function() {
 
 	});
 });
+
+Template.mapPage.events({
+  'click .btn': function(e){
+    e.preventDefault();
+    var postId = this._id;
+    Posts.remove(postId);
+    // console.log(postId);
+    // Markers.remove()
+  }
+})

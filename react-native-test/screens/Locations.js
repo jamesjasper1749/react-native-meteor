@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Platform, Text, View, StyleSheet } from 'react-native';
-import { Constants, Location, Permissions } from 'expo';
+import { Constants, Location, Permissions, MapView } from 'expo';
 
-export default class Locations extends Component {
+
+class Locations extends Component {
   state = {
     location: null,
     errorMessage: null,
@@ -35,12 +36,20 @@ export default class Locations extends Component {
     if (this.state.errorMessage) {
       text = this.state.errorMessage;
     } else if (this.state.location) {
-      text = JSON.stringify(this.state.location);
-    }
+      text = JSON.stringify(this.state.location.coords);
+      console.log(this.state.location.coords.longitude);
+      console.log(this.state.location.coords.latitude);
 
+    }
     return (
-      <View style={styles.container}>
-        <Text style={styles.paragraph}>{text}</Text>
+      <View style={ styles.container }>
+          <MapView
+            style={{ alignSelf: 'stretch' ,flex: 1}}
+            region={this.state.mapRegion}
+            onRegionChange={this._handleMapRegionChange}
+            followUserLocation={true}
+            showsUserLocation={true}
+          />
       </View>
     );
   }
@@ -51,7 +60,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: Constants.statusBarHeight,
+    // paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ecf0f1',
   },
   paragraph: {
@@ -60,3 +69,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+export default Locations;
